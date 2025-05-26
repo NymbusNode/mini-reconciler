@@ -10,7 +10,7 @@ class Trade(Base):
     side     = Column(Text, CheckConstraint("side IN ('BUY','SELL')"), nullable=False)
     qty      = Column(Numeric, nullable=False)
     price    = Column(Numeric, nullable=False)
-    trade_ts = Column(TIMESTAMP(timezone=False), server_default=func.now())
+    trade_ts = Column(TIMESTAMP(timezone=True), server_default=func.now())
 
 class Break(Base):
     __tablename__ = "breaks"
@@ -18,7 +18,7 @@ class Break(Base):
     break_id    = Column(Integer, primary_key=True, autoincrement=True)
     trade_id    = Column(Integer)
     reason      = Column(Text, nullable=False)
-    detected_ts = Column(TIMESTAMP(timezone=False), server_default=func.now())
+    detected_ts = Column(TIMESTAMP(timezone=True), server_default=func.now())
 
 class Position(Base):
     __tablename__ = "positions"

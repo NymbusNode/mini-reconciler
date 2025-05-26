@@ -5,7 +5,7 @@ CREATE TABLE IF NOT EXISTS trades (
     side        TEXT        CHECK (side IN ('BUY','SELL')),
     qty         NUMERIC     NOT NULL,
     price       NUMERIC     NOT NULL,
-    trade_ts    TIMESTAMP   NOT NULL DEFAULT NOW()
+    trade_ts    TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 
 -- Breaks detected during reconciliation
@@ -13,7 +13,7 @@ CREATE TABLE IF NOT EXISTS breaks (
     break_id    SERIAL PRIMARY KEY,
     trade_id    INT REFERENCES trades(trade_id),
     reason      TEXT        NOT NULL,
-    detected_ts TIMESTAMP   NOT NULL DEFAULT NOW()
+    detected_ts TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 
 -- Net positions per symbol

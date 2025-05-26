@@ -9,18 +9,25 @@ services:
       - "5432:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
+    healthcheck:                       # ← add this
+      test: ["CMD-SHELL", "pg_isready -U reconciler"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
 
   app:
     build:
       context: .
-    depends_on:
-      - db
     environment:
-      - DATABASE_URL=postgres+asyncpg://reconciler:reconciler@db:5432/reconciler_db
+      - DATABASE_URL=postgresql+asyncpg://reconciler:reconciler@db:5432/reconciler_db
     volumes:
       - .:/code
     working_dir: /code
-    command: ["python", "app/service/server.py"]
-
+    command: ["python", "-m", "app.service.server"]
+    depends_on:                       
+      db:
+        condition: service_healthy
+    ports:                 
+      - "50051:50051"
 volumes:
   pgdata:
