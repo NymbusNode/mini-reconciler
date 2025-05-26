@@ -1,0 +1,22 @@
+<table class="w-full bg-white shadow rounded-lg overflow-hidden">
+  <thead class="bg-gray-200">
+    <tr>
+      <th class="text-left px-4 py-2">Symbol</th>
+      <th class="text-right px-4 py-2">Net Qty</th>
+      <th class="text-right px-4 py-2">VWAP</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for p in positions %}
+    <tr class="border-t">
+      <td class="px-4 py-2">{{ p.symbol }}</td>
+      <td class="px-4 py-2 text-right">{{ '%.2f' % p.net_qty }}</td>
+      <td class="px-4 py-2 text-right">{{ '%.2f' % p.vwap }}</td>
+    </tr>
+    {% else %}
+    <tr>
+      <td colspan="3" class="text-center py-4 text-gray-500">No positions available.</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>

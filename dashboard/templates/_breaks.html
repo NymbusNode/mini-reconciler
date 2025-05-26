@@ -1,0 +1,22 @@
+<table class="w-full bg-white shadow rounded-lg overflow-hidden">
+  <thead class="bg-red-100">
+    <tr>
+      <th class="text-left px-4 py-2">Trade ID</th>
+      <th class="text-left px-4 py-2">Reason</th>
+      <th class="text-left px-4 py-2">Detected (UTC)</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for b in breaks %}
+    <tr class="border-t">
+      <td class="px-4 py-2">{{ b.trade_id }}</td>
+      <td class="px-4 py-2">{{ b.reason }}</td>
+      <td class="px-4 py-2">{{ b.detected_ts }}</td>
+    </tr>
+    {% else %}
+    <tr>
+      <td colspan="3" class="text-center py-4 text-gray-500">No breaks detected.</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>

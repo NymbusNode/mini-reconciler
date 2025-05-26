@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Reconciler Dashboard</title>
+  <script src="https://unpkg.com/htmx.org@1.9.2"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 text-gray-800">
+  <div class="container mx-auto py-8">
+    <h1 class="text-3xl font-bold mb-6">Post-Trade Reconciliation Dashboard</h1>
+
+    <div class="flex gap-4 mb-6">
+      <form hx-post="/ingest" hx-target="body" hx-swap="outerHTML">
+        <button class="px-4 py-2 bg-blue-600 text-white rounded">Ingest Trades</button>
+      </form>
+      <button hx-get="/positions" hx-target="#positions-table" class="px-4 py-2 bg-green-600 text-white rounded">Refresh Positions</button>
+      <button hx-get="/breaks" hx-target="#breaks-table" class="px-4 py-2 bg-red-600 text-white rounded">Refresh Breaks</button>
+    </div>
+
+    <div id="positions-table">
+      {% include "_positions.html" %}
+    </div>
+
+    <div id="breaks-table" class="mt-8">
+      {% include "_breaks.html" %}
+    </div>
+  </div>
+</body>
+</html>
