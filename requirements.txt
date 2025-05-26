@@ -1,0 +1,8 @@
+asyncpg==0.29.0
+SQLAlchemy[asyncio]==2.0.30
+grpcio==1.62.1
+grpcio-tools==1.62.1
+typer==0.9.0
+rich==13.7.1
+python-dotenv==1.0.1
+faker==24.3.0

@@ -1,0 +1,35 @@
+syntax = "proto3";
+
+package recon;
+
+message Empty {}
+
+message Trade {
+  string symbol = 1;
+  string side   = 2;
+  double qty    = 3;
+  double price  = 4;
+  string trade_ts = 5;
+}
+
+message IngestResponse { int32 inserted = 1; }
+
+message Break {
+  int32  trade_id    = 1;
+  string reason      = 2;
+  string detected_ts = 3;
+}
+message Breaks { repeated Break items = 1; }
+
+message Position {
+  string symbol = 1;
+  double net_qty = 2;
+  double vwap    = 3;
+}
+message Positions { repeated Position items = 1; }
+
+service ReconcileService {
+  rpc IngestTrades(stream Trade) returns (IngestResponse);
+  rpc GetBreaks(Empty) returns (Breaks);
+  rpc GetPositions(Empty) returns (Positions);
+}

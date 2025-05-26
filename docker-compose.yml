@@ -1,0 +1,26 @@
+services:
+  db:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: reconciler
+      POSTGRES_PASSWORD: reconciler
+      POSTGRES_DB: reconciler_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  app:
+    build:
+      context: .
+    depends_on:
+      - db
+    environment:
+      - DATABASE_URL=postgres+asyncpg://reconciler:reconciler@db:5432/reconciler_db
+    volumes:
+      - .:/code
+    working_dir: /code
+    command: ["python", "app/service/server.py"]
+
+volumes:
+  pgdata:
