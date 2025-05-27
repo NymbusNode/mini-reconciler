@@ -45,13 +45,13 @@ async def _init_db() -> None:
         await conn.run_sync(models.Base.metadata.create_all)
 
 def _simulate_counterparty(trades: list[models.Trade]) -> list[models.CounterpartyTrade]:
-    """Copy 75 % of trades; 25 % are altered/missing; 25 % of copied trades get qty tweak."""
+    """Copy 90 % of trades; 10 % are missing; 10 % of copied trades get qty tweak."""
     cp = []
     for t in trades:
-        if random.random() >= 0.75:  # missing 25 %
+        if random.random() >= 0.90:  # missing 10 %
             continue
         new_qty = t.qty
-        if random.random() < 0.25:  # alter qty 25 % of included trades
+        if random.random() < 0.10:  # alter qty 10 % of included trades
             delta = random.randint(-20, 20)
             new_qty = max(1, t.qty + delta)
         cp.append(
