@@ -33,6 +33,8 @@ services:
   dashboard:
     build:
       context: .
+    environment:
+      - GRPC_SERVER=app:50051   
     command: uvicorn dashboard.main:app --host 0.0.0.0 --port 8000 --reload
     volumes:
       - .:/code

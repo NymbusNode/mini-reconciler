@@ -3,28 +3,72 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Reconciler Dashboard</title>
+  <title>Mini Reconciler Dashboard</title>
   <script src="https://unpkg.com/htmx.org@1.9.2"></script>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gray-100 text-gray-800">
-  <div class="container mx-auto py-8">
-    <h1 class="text-3xl font-bold mb-6">Post-Trade Reconciliation Dashboard</h1>
+  <div class="container mx-auto py-6 space-y-6">
+    <!-- Header -->
+    <div class="mb-4">
+      <h1 class="text-4xl font-bold">Mini Reconciler</h1>
+      <p class="text-sm text-gray-600 mt-1">Python  · FastAPI · gRPC · PostgreSQL · Docker · HTMX · Tailwind</p>
+      <p class="text-sm text-gray-600 mt-1">Hosted on Homelab Server via Proxmox Virtual Machine  · DNS · Ngnix/Certbot</p>
+      <p class="text-sm text-gray-600 mt-1">Author: Daryck Brown</p>
+      <a href="https://github.com/NymbusNode/mini-reconciler" class="text-blue-600 underline text-sm">View source on GitHub</a>
+    </div>
 
-    <div class="flex gap-4 mb-6">
+    <!-- Summary Bar -->
+    <div class="grid grid-cols-3 gap-4 text-center">
+      <div class="bg-white shadow rounded p-4">
+        <p class="text-gray-500 text-xs">Total Trades</p>
+        <p class="text-2xl font-bold">{{ total_trades }}</p>
+      </div>
+      <div class="bg-white shadow rounded p-4">
+        <p class="text-gray-500 text-xs">Breaks</p>
+        <p class="text-2xl font-bold text-red-600">{{ total_breaks }}</p>
+      </div>
+      <div class="bg-white shadow rounded p-4">
+        <p class="text-gray-500 text-xs">PnL (non‑broken)</p>
+        <p class="text-2xl font-bold text-green-700">${{ pnl }}</p>
+      </div>
+    </div>
+
+    <!-- Control Buttons -->
+    <div class="flex gap-3">
       <form hx-post="/ingest" hx-target="body" hx-swap="outerHTML">
-        <button class="px-4 py-2 bg-blue-600 text-white rounded">Ingest Trades</button>
+        <button class="px-4 py-2 bg-blue-600 text-white rounded">Ingest 50 Trades</button>
       </form>
-      <button hx-get="/positions" hx-target="#positions-table" class="px-4 py-2 bg-green-600 text-white rounded">Refresh Positions</button>
-      <button hx-get="/breaks" hx-target="#breaks-table" class="px-4 py-2 bg-red-600 text-white rounded">Refresh Breaks</button>
+      <button hx-post="/clear" hx-target="body" hx-swap="outerHTML" class="px-4 py-2 bg-red-600 text-white rounded">Clear All</button>
+      <button hx-get="/partial/trades" hx-target="#trades-wrapper" class="px-4 py-2 bg-gray-700 text-white rounded">Refresh Tables</button>
     </div>
 
-    <div id="positions-table">
-      {% include "_positions.html" %}
-    </div>
-
-    <div id="breaks-table" class="mt-8">
-      {% include "_breaks.html" %}
+    <!-- Tables -->
+    <div class="grid grid-cols-2 gap-6">
+      <div>
+        <h2 class="font-semibold mb-2">Booked Trades</h2>
+        <div id="trades-wrapper" class="max-h-[400px] overflow-y-auto">
+          {% include "_trades.html" %}
+        </div>
+      </div>
+      <div>
+        <h2 class="font-semibold mb-2">Counterparty Trades</h2>
+        <div id="counterparty-wrapper" class="max-h-[400px] overflow-y-auto">
+          {% include "_counterparty.html" %}
+        </div>
+      </div>
+      <div>
+        <h2 class="font-semibold mb-2">Breaks</h2>
+        <div id="breaks-wrapper" class="max-h-[400px] overflow-y-auto">
+          {% include "_breaks.html" %}
+        </div>
+      </div>
+      <div>
+        <h2 class="font-semibold mb-2">Net Positions</h2>
+        <div id="positions-wrapper" class="max-h-[400px] overflow-y-auto">
+          {% include "_positions.html" %}
+        </div>
+      </div>
     </div>
   </div>
 </body>

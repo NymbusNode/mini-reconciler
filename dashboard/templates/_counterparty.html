@@ -1,0 +1,26 @@
+<table class="w-full text-sm bg-white shadow rounded">
+  <thead class="bg-gray-200 text-xs">
+    <tr>
+      <th class="px-3 py-1 text-left">Trade ID</th>
+      <th class="px-3 py-1 text-left">Symbol</th>
+      <th class="px-3 py-1 text-center">Side</th>
+      <th class="px-3 py-1 text-right">Qty</th>
+      <th class="px-3 py-1 text-right">Price</th>
+      <th class="px-3 py-1 text-right">Timestamp</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for c in counterparty %}
+    <tr class="border-t">
+      <td class="px-3 py-1">{{ c.trade_id }}</td>
+      <td class="px-3 py-1">{{ c.symbol }}</td>
+      <td class="px-3 py-1 text-center">{{ c.side }}</td>
+      <td class="px-3 py-1 text-right">{{ '%.2f' % c.qty }}</td>
+      <td class="px-3 py-1 text-right">{{ '%.2f' % c.price }}</td>
+      <td class="px-3 py-1 text-right text-xs">{{ c.trade_ts }}</td>
+    </tr>
+    {% else %}
+    <tr><td colspan="6" class="text-center py-4 text-gray-400">No counter‑party trades</td></tr>
+    {% endfor %}
+  </tbody>
+</table>

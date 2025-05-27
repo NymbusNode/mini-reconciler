@@ -1,6 +1,7 @@
-import asyncio, pathlib, sys
-import grpc
+import os, pathlib, sys, grpc
 from grpc_tools import protoc
+
+GRPC_TARGET = os.getenv("GRPC_SERVER", "localhost:50051")
 
 PROTO_PATH = pathlib.Path(__file__).parent.parent.parent / "proto"
 GENERATED_PATH = PROTO_PATH / "generated"
@@ -20,7 +21,7 @@ import reconcile_pb2 as pb2
 import reconcile_pb2_grpc as pb2_grpc
 
 async def ingest_trades(trades):
-    async with grpc.aio.insecure_channel("localhost:50051") as channel:
+    async with grpc.aio.insecure_channel(GRPC_TARGET) as channel:
         stub = pb2_grpc.ReconcileServiceStub(channel)
         async def generator():
             for t in trades:
@@ -29,13 +30,13 @@ async def ingest_trades(trades):
         return resp.inserted
 
 async def get_positions():
-    async with grpc.aio.insecure_channel("localhost:50051") as channel:
+    async with grpc.aio.insecure_channel(GRPC_TARGET) as channel:
         stub = pb2_grpc.ReconcileServiceStub(channel)
         res = await stub.GetPositions(pb2.Empty())
         return res.items
 
 async def get_breaks():
-    async with grpc.aio.insecure_channel("localhost:50051") as channel:
+    async with grpc.aio.insecure_channel(GRPC_TARGET) as channel:
         stub = pb2_grpc.ReconcileServiceStub(channel)
         res = await stub.GetBreaks(pb2.Empty())
         return res.items

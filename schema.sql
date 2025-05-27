@@ -8,6 +8,17 @@ CREATE TABLE IF NOT EXISTS trades (
     trade_ts    TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 
+-- Counter-party view of trades sent by custodian
+CREATE TABLE IF NOT EXISTS counterparty_trades (
+    id        SERIAL PRIMARY KEY,
+    trade_id  INT REFERENCES trades(trade_id),
+    symbol    TEXT        NOT NULL,
+    side      TEXT        CHECK (side IN ('BUY','SELL')),
+    qty       NUMERIC     NOT NULL,
+    price     NUMERIC     NOT NULL,
+    trade_ts  TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
 -- Breaks detected during reconciliation
 CREATE TABLE IF NOT EXISTS breaks (
     break_id    SERIAL PRIMARY KEY,

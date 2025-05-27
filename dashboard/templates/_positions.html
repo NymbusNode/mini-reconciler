@@ -1,22 +1,20 @@
-<table class="w-full bg-white shadow rounded-lg overflow-hidden">
-  <thead class="bg-gray-200">
+<table class="w-full text-sm bg-white shadow rounded">
+  <thead class="bg-gray-200 text-xs">
     <tr>
-      <th class="text-left px-4 py-2">Symbol</th>
-      <th class="text-right px-4 py-2">Net Qty</th>
-      <th class="text-right px-4 py-2">VWAP</th>
+      <th class="px-3 py-1 text-left">Symbol</th>
+      <th class="px-3 py-1 text-right">Net Qty</th>
+      <th class="px-3 py-1 text-right">VWAP</th>
     </tr>
   </thead>
   <tbody>
     {% for p in positions %}
     <tr class="border-t">
-      <td class="px-4 py-2">{{ p.symbol }}</td>
-      <td class="px-4 py-2 text-right">{{ '%.2f' % p.net_qty }}</td>
-      <td class="px-4 py-2 text-right">{{ '%.2f' % p.vwap }}</td>
+      <td class="px-3 py-1">{{ p.symbol }}</td>
+      <td class="px-3 py-1 text-right">{{ '%.2f' % p.net_qty }}</td>
+      <td class="px-3 py-1 text-right">{{ '%.2f' % p.vwap }}</td>
     </tr>
     {% else %}
-    <tr>
-      <td colspan="3" class="text-center py-4 text-gray-500">No positions available.</td>
-    </tr>
+    <tr><td colspan="3" class="text-center py-4 text-gray-400">No positions</td></tr>
     {% endfor %}
   </tbody>
 </table>
